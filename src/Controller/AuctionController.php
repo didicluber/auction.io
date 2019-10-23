@@ -5,13 +5,9 @@ namespace App\Controller;
 use App\Entity\Auction;
 use App\Form\AuctionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class AuctionController extends Controller
 {
@@ -32,10 +28,16 @@ class AuctionController extends Controller
      * @Route("/{id}", name="auction_details")
      *
      * @param $id
+     * @return Response
      */
+//    public function detailsAction(Auction $auction)
+//* @param Auction $auction
     public function detailsAction($id)
     {
-        return $this->render("Auction/details.html.twig");
+        $entityManager = $this->getDoctrine()->getManager();
+        $auction = $entityManager->getRepository(Auction::class)->findOneBy(["id" => $id]);
+
+        return $this->render("Auction/details.html.twig", ["auction" => $auction]);
     }
 
     /**
