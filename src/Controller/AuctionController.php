@@ -17,16 +17,19 @@ class AuctionController extends Controller
     {
         $auctions = [
             [
+                "id" => 1,
                 "title" => "Excellent car",
                 "description" => "Simple excellent car description",
                 "price" => "1000 zł"
             ],
             [
+                "id" => 2,
                 "title" => "Bike",
                 "description" => "Simple bike description",
                 "price" => "100 zł"
             ],
             [
+                "id" => 3,
                 "title" => "Dishwasher",
                 "description" => "Simple dishwasher description",
                 "price" => "300 zł"
@@ -34,5 +37,15 @@ class AuctionController extends Controller
         ];
 
         return $this->render("Auction/index.html.twig", ["auctions" => $auctions]);
+    }
+
+    /**
+     * @Route("/{id}", name="auction_details")
+     *
+     * @param $id
+     */
+    public function detailsAction($id)
+    {
+        return $this->render("Auction/details.html.twig");
     }
 }
