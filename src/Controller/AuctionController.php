@@ -15,6 +15,24 @@ class AuctionController extends Controller
      */
     public function indexAction()
     {
-        return $this->render("Auction/index.html.twig");
+        $auctions = [
+            [
+                "title" => "Excellent car",
+                "description" => "Simple excellent car description",
+                "price" => "1000 zł"
+            ],
+            [
+                "title" => "Bike",
+                "description" => "Simple bike description",
+                "price" => "100 zł"
+            ],
+            [
+                "title" => "Dishwasher",
+                "description" => "Simple dishwasher description",
+                "price" => "300 zł"
+            ]
+        ];
+
+        return $this->render("Auction/index.html.twig", ["auctions" => $auctions]);
     }
 }

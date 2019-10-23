@@ -2,4 +2,10 @@
 
 {% block body %}
     <h1>Auction list</h1>
+
+    {% for auction in auctions %}
+        <h3>{{ auction.title }}</h3>
+        <p>{{ auction.description }}</p>
+        <p>{{ auction.price }}</p>
+    {% endfor %}
 {% endblock %}
