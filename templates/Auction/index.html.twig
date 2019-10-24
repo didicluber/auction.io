@@ -5,17 +5,25 @@
 
     <div class="card-columns">
         {% for auction in auctions %}
-                <div class="card">
-                    <div class="card-header">
-                        <h4><a href="{{ url("auction_details", {"id": auction.id}) }}">{{ auction.title }}</a></h4>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">{{ auction.description }}</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Price: {{ auction.price }} Euro</li>
-                    </ul>
+            <div class="card">
+                <div class="card-header">
+                    <h4><a href="{{ url("auction_details", {"id": auction.id}) }}">{{ auction.title }}</a></h4>
                 </div>
+                <div class="card-body">
+                    <p class="card-text">{{ auction.description }}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Price: {{ auction.price }} Euro</li>
+                    <li class="list-group-item">Starting price: {{ auction.startingPrice }} Euro</li>
+                    <li class="list-group-item">Auction end date: {{ auction.expiresAt | date("d.m.Y H:i:s") }}</li>
+                </ul>
+            </div>
+        {% else %}
+            <div class="card border-warning mb-3">
+                <div class="card-body text-warning">
+                    <h4>Ups, no active auctions :(</h4>
+                </div>
+            </div>
         {% endfor %}
     </div>
 {% endblock %}

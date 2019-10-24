@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Auction;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -19,6 +20,8 @@ class AuctionType extends AbstractType
             ->add("title", TextType::class, ['label'=> "Title"])
             ->add("description", TextareaType::class, ['label'=> "Description"])
             ->add("price", NumberType::class, ['label'=> "Price"])
+            ->add("startingPrice", NumberType::class, ['label' => "Starting Price"])
+            ->add("expiresAt", DateTimeType::class, ['label' => "Expires at"])
             ->add("submit", SubmitType::class, ['label'=> "Send it!"]);
     }
 
