@@ -30,8 +30,9 @@ class AuctionController extends Controller
      * @param $id
      * @return Response
      */
+    //* @param Auction $auction
+
 //    public function detailsAction(Auction $auction)
-//* @param Auction $auction
     public function detailsAction($id)
     {
         $entityManager = $this->getDoctrine()->getManager();
