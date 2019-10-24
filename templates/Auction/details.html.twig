@@ -14,6 +14,18 @@
             <li class="list-group-item">Auction end date: {{ auction.expiresAt | date("d.m.Y H:i:s") }}</li>
         </ul>
     </div>
-    <a class="btn btn-light mt-3" href="{{ url("auction_index") }}">Go back</a>
-    {{ form(deleteForm) }}
+    <div class="container mt-3 mb-5">
+        <a class="btn btn-secondary float-left mr-2" href="{{ url("auction_index") }}">Go back</a>
+        <a class="btn btn-info float-left mr-2" href="{{ url("auction_edit", {"id": auction.id}) }}">Edit</a>
+        {{ form_start(deleteForm, { "attr": {"class": "float-left"}}) }}
+            {{ form_widget(deleteForm.submit, { "attr": {"class": "btn-danger"}}) }}
+            {{ form_rest(deleteForm) }}
+        {{ form_end(deleteForm) }}
+
+        {{ form_start(finishForm, { "attr": {"class": "float-right"}}) }}
+            {{ form_widget(finishForm.submit, { "attr": {"class": "btn-success"}}) }}
+            {{ form_rest(finishForm) }}
+        {{ form_end(finishForm) }}
+    </div>
+
 {% endblock %}
