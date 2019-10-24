@@ -1,11 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Auction list</h1>
+    <h1 class="mb-4">Auction list</h1>
 
-    {% for auction in auctions %}
-        <h3><a href="{{ url("auction_details", {"id": auction.id}) }}">{{ auction.title }}</a></h3>
-        <p>{{ auction.description }}</p>
-        <p>{{ auction.price }}</p>
-    {% endfor %}
+    <div class="card-columns">
+        {% for auction in auctions %}
+                <div class="card">
+                    <div class="card-header">
+                        <h4><a href="{{ url("auction_details", {"id": auction.id}) }}">{{ auction.title }}</a></h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ auction.description }}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Price: {{ auction.price }} Euro</li>
+                    </ul>
+                </div>
+        {% endfor %}
+    </div>
 {% endblock %}

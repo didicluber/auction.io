@@ -31,7 +31,6 @@ class AuctionController extends Controller
      * @return Response
      */
     //* @param Auction $auction
-
 //    public function detailsAction(Auction $auction)
     public function detailsAction($id)
     {

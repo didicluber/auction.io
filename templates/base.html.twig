@@ -2,15 +2,31 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Auction system{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset("vendor/bootstrap/dist/css/bootstrap.min.css") }}"/>
         {% endblock %}
     </head>
     <body>
+        <div class="container" style="margin-top: 15px;">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ url("auction_index") }}">Auctions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url("auction_add") }}">Add auction</a>
+                </li>
+            </ul>
+        </div>
+        <hr/>
         <div class="container">
             {% block body %}{% endblock %}
         </div>
+        <hr/>
+        <div class="container">
+            <p class="text-center">Copyright 2019</p>
+        </div>
+
         {% block javascripts %}{% endblock %}
     </body>
 </html>
