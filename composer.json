@@ -8,6 +8,7 @@
         "doctrine/doctrine-bundle": "^1.11",
         "doctrine/orm": "^2.6",
         "sensio/distribution-bundle": "^5.0",
+        "sensio/framework-extra-bundle": "4",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "3.4.*",
         "symfony/console": "3.4.*",
