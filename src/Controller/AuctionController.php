@@ -6,6 +6,7 @@ use App\Entity\Auction;
 use App\Form\AuctionType;
 use App\Form\BidType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,6 +82,8 @@ class AuctionController extends Controller
      */
     public function addAction(Request $request)
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
+
         $auction = new Auction();
 
         $form = $this->createForm(AuctionType::class, $auction);
@@ -97,7 +100,8 @@ class AuctionController extends Controller
 
             if ($form->isValid()) {
                 $auction
-                    ->setStatus(Auction::STATUS_ACTIVE);
+                    ->setStatus(Auction::STATUS_ACTIVE)
+                    ->setOwner($this->getUser());
 
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($auction);
@@ -124,7 +128,13 @@ class AuctionController extends Controller
      */
     public function editAction(Request $request, Auction $auction)
     {
-       $form = $this->createForm(AuctionType::class, $auction);
+        $this->denyAccessUnlessGranted("ROLE_USER");
+
+        if ($this->getUser() !== $auction->getOwner()) {
+            throw new AccessDeniedException();
+        }
+
+        $form = $this->createForm(AuctionType::class, $auction);
 
        if($request->isMethod("post")) {
            $form->handleRequest($request);
@@ -151,6 +161,12 @@ class AuctionController extends Controller
      */
     public function deleteAction(Auction $auction)
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
+
+        if ($this->getUser() !== $auction->getOwner()) {
+            throw new AccessDeniedException();
+        }
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($auction);
         $entityManager->flush();
@@ -169,6 +185,12 @@ class AuctionController extends Controller
      */
     public function finishAction(Auction $auction)
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
+
+        if ($this->getUser() !== $auction->getOwner()) {
+            throw new AccessDeniedException();
+        }
+
         $auction
             ->setExpiresAt(new \DateTime())
             ->setStatus(Auction::STATUS_FINISHED);
