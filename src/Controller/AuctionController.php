@@ -7,6 +7,7 @@ use App\Form\AuctionType;
 use App\Form\BidType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -86,6 +87,13 @@ class AuctionController extends Controller
 
         if ($request->isMethod("post")) {
             $form->handleRequest($request);
+
+            if ($auction->getStartingPrice() >= $auction->getPrice()) {
+                $form
+                    ->get("startingPrice")
+                    ->addError(
+                        new FormError("Starting price cannot be higher than last price."));
+            }
 
             if ($form->isValid()) {
                 $auction
