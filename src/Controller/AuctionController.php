@@ -87,16 +87,20 @@ class AuctionController extends Controller
         if ($request->isMethod("post")) {
             $form->handleRequest($request);
 
-            $auction
-                ->setStatus(Auction::STATUS_ACTIVE);
+            if ($form->isValid()) {
+                $auction
+                    ->setStatus(Auction::STATUS_ACTIVE);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($auction);
-            $entityManager->flush();
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($auction);
+                $entityManager->flush();
 
-            $this->addFlash("success", "{$auction->getTitle()} auction added.");
+                $this->addFlash("success", "{$auction->getTitle()} auction added.");
 
-            return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
+                return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
+            }
+
+            $this->addFlash("error", "Failed to add new auction.");
         }
 
         return $this->render("Auction/add.html.twig", ["form" => $form->createView()]);
