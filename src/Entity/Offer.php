@@ -6,6 +6,7 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Offer
@@ -31,6 +32,10 @@ class Offer
      * @var string
      *
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2)
+     * @Assert\NotBlank()
+     * @Assert\GreaterThan(
+     *     value="0"
+     * )
      */
     private $price;
 

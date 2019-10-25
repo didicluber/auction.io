@@ -54,18 +54,43 @@ class OfferController extends Controller
 
         $bidForm->handleRequest($request);
 
-        $offer
-            ->setType(Offer::TYPE_BID)
-            ->setAuction($auction);
+        if ($bidForm->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $lastOffer = $entityManager
+                ->getRepository(Offer::class)
+                ->findOneBy(["auction" => $auction], ["createdAt" => "DESC"]);
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($offer);
-        $entityManager->flush();
+            if (isset($lastOffer)) {
+                if ($offer->getPrice() <= $lastOffer->getPrice()) {
+                    $this->addFlash(
+                        "error",
+                        "Your price is to low. It must be higher than {$lastOffer->getPrice()} Euro"
+                    );
 
-        $this->addFlash(
-            "success",
-            "You have submitted an offer for a {$auction->getTitle()} for {$offer->getPrice()} Euro."
-        );
+                    return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
+                }
+            } else {
+                if ($offer->getPrice() < $auction->getStartingPrice()) {
+                    $this->addFlash("error", "Your price cannot be low than starting price.");
+
+                    return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
+                }
+            }
+
+            $offer
+                ->setType(Offer::TYPE_BID)
+                ->setAuction($auction);
+
+            $entityManager->persist($offer);
+            $entityManager->flush();
+
+            $this->addFlash(
+                "success",
+                "You have submitted an offer for a {$auction->getTitle()} for {$offer->getPrice()} Euro."
+            );
+        } else {
+            $this->addFlash("error", "Failed bidding :(");
+        }
 
         return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
     }
