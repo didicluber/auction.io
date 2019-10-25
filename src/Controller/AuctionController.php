@@ -74,6 +74,8 @@ class AuctionController extends Controller
     /**
      * @Route("/auction/add", name="auction_add")
      *
+     * @param Request $request
+     *
      * @return Response
      */
     public function addAction(Request $request)
@@ -82,7 +84,7 @@ class AuctionController extends Controller
 
         $form = $this->createForm(AuctionType::class, $auction);
 
-        if($request->isMethod("post")) {
+        if ($request->isMethod("post")) {
             $form->handleRequest($request);
 
             $auction
@@ -91,6 +93,8 @@ class AuctionController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($auction);
             $entityManager->flush();
+
+            $this->addFlash("success", "{$auction->getTitle()} auction added.");
 
             return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
         }
@@ -117,6 +121,9 @@ class AuctionController extends Controller
            $entityManager->persist($auction);
            $entityManager->flush();
 
+           $this->addFlash("success", "{$auction->getTitle()} auction edited.");
+
+
            return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
        }
 
@@ -135,6 +142,8 @@ class AuctionController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($auction);
         $entityManager->flush();
+
+        $this->addFlash("success", "{$auction->getTitle()} auction deleted.");
 
         return $this->redirectToRoute("auction_index");
     }
@@ -155,6 +164,8 @@ class AuctionController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($auction);
         $entityManager->flush();
+
+        $this->addFlash("success", "{$auction->getTitle()} auction finished.");
 
         return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
     }
