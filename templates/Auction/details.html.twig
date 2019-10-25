@@ -23,9 +23,14 @@
         {{ form_end(deleteForm) }}
 
         {{ form_start(finishForm, { "attr": {"class": "float-right"}}) }}
-            {{ form_widget(finishForm.submit, { "attr": {"class": "btn-success"}}) }}
+            {{ form_widget(finishForm.submit, { "attr": {"class": "btn-dark"}}) }}
             {{ form_rest(finishForm) }}
         {{ form_end(finishForm) }}
+
+        {{ form_start(buyForm, { "attr": {"class": "float-right mr-2"}}) }}
+            {{ form_widget(buyForm.submit, { "attr": {"class": "btn-success"}}) }}
+            {{ form_rest(buyForm) }}
+        {{ form_end(buyForm) }}
     </div>
 
 {% endblock %}
