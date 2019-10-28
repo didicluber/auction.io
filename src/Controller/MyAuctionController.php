@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Auction;
+use App\EventDispatcher\AuctionEvent;
+use App\EventDispatcher\Events;
 use App\Form\AuctionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -99,6 +101,8 @@ class MyAuctionController extends Controller
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($auction);
                 $entityManager->flush();
+
+                $this->get("event_dispatcher")->dispatch(Events::AUCTION_ADD, new AuctionEvent($auction));
 
                 $this->addFlash("success", "{$auction->getTitle()} auction added.");
 
