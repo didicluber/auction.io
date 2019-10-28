@@ -25,15 +25,22 @@
 
     <div class="container mt-3 mb-5">
         <a class="btn btn-secondary float-left mr-2" href="{{ url("auction_index") }}">Go back</a>
-
+        {% if is_granted("ROLE_USER") %}
         {{ form_start(buyForm, { "attr": {"class": "float-right mr-2"}}) }}
             {{ form_widget(buyForm.submit, { "attr": {"class": "btn-success"}}) }}
             {{ form_rest(buyForm) }}
         {{ form_end(buyForm) }}
+        {% endif %}
 
     </div>
 
     <div class="clearfix"></div>
-    {{ form(bidForm, {"attr": {"class": "mt-5", "novalidate": "novalidate"}}) }}
+    {% if is_granted("ROLE_USER") %}
+        {{ form(bidForm, {"attr": {"class": "mt-5", "novalidate": "novalidate"}}) }}
+    {% endif %}
+
+    {% if not is_granted("ROLE_USER") %}
+        Log in to bidding or buying items.
+    {% endif %}
 
 {% endblock %}
