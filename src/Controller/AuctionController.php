@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Auction;
 use App\Form\BidType;
+use App\Service\DateService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +17,13 @@ class AuctionController extends Controller
      *
      * @return Response
      */
-    public function indexAction()
+    public function indexAction(DateService $dateService)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $auctions = $entityManager->getRepository(Auction::class)->findActiveOrdered();
+
+        $logger = $this->get("logger");
+        $logger->info("Current day " . $dateService->getDay(new \DateTime()));
 
         return $this->render("Auction/index.html.twig", ["auctions" => $auctions]);
     }
