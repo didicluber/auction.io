@@ -40,17 +40,6 @@ class AuctionController extends Controller
             return $this->render("Auction/finished.html.twig", ["auction" => $auction]);
         }
 
-        $deleteForm = $this->createFormBuilder()
-            ->setAction($this->generateUrl("auction_delete", ["id" => $auction->getId()]))
-            ->setMethod(Request::METHOD_DELETE)
-            ->add("submit", SubmitType::class, ["label" => "Delete"])
-            ->getForm();
-
-        $finishForm = $this->createFormBuilder()
-            ->setAction($this->generateUrl("auction_finish", ["id" => $auction->getId()]))
-            ->add("submit", SubmitType::class, ["label" => "Finish"])
-            ->getForm();
-
         $buyForm = $this->createFormBuilder()
             ->setAction($this->generateUrl("offer_buy", ["id" => $auction->getId()]))
             ->add("submit", SubmitType::class, ["label" => "Buy it!"])
@@ -65,8 +54,6 @@ class AuctionController extends Controller
             "Auction/details.html.twig",
             [
                 "auction" => $auction,
-                "deleteForm" => $deleteForm->createView(),
-                "finishForm" => $finishForm->createView(),
                 "buyForm" => $buyForm->createView(),
                 "bidForm" => $bidForm->createView()
             ]
