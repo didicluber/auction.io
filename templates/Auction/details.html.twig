@@ -23,24 +23,35 @@
         </ul>
     </div>
 
-    <div class="container mt-3 mb-5">
-        <a class="btn btn-secondary float-left mr-2" href="{{ url("auction_index") }}">Go back</a>
-        {% if is_granted("ROLE_USER") %}
-        {{ form_start(buyForm, { "attr": {"class": "float-right mr-2"}}) }}
-            {{ form_widget(buyForm.submit, { "attr": {"class": "btn-success"}}) }}
-            {{ form_rest(buyForm) }}
-        {{ form_end(buyForm) }}
-        {% endif %}
-
-    </div>
-
-    <div class="clearfix"></div>
     {% if is_granted("ROLE_USER") %}
-        {{ form(bidForm, {"attr": {"class": "mt-5", "novalidate": "novalidate"}}) }}
+    <div class="card mt-3">
+        <div class="card-body">
+            <div class="input-group">
+                {{ form_start(buyForm, {"attr": {"class": "float-left mr-3"}}) }}
+                {{ form_widget(buyForm.submit, { "attr": {"class": "btn-success"}}) }}
+                {{ form_rest(buyForm) }}
+                {{ form_end(buyForm) }}
+
+                {{ form_start(bidForm, {"attr": {"class": "float-left", "novalidate": "novalidate"}}) }}
+                    <div class="input-group">
+                        {{ form_widget(bidForm.price) }}
+                        <div class="input-group-append">
+                            {{ form_widget(bidForm.submit)}}
+                        </div>
+                    </div>
+                    {{ form_rest(bidForm) }}
+                {{ form_end(bidForm) }}
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
     {% endif %}
+
+    <div class="container mt-3 mb-5">
+        <a class="btn btn-secondary mr-2" href="{{ url("auction_index") }}">Go back</a>
+    </div>
 
     {% if not is_granted("ROLE_USER") %}
         Log in to bidding or buying items.
     {% endif %}
-
 {% endblock %}
