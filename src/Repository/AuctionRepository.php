@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
+use App\Entity\Auction;
 use \Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,5 +14,37 @@ use \Doctrine\ORM\EntityRepository;
  */
 class AuctionRepository extends EntityRepository
 {
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    public function findActiveOrdered()
+    {
+        return $this->createQueryBuilder("a")
+            ->where("a.status = :active")
+            ->setParameter("active", Auction::STATUS_ACTIVE)
+            ->andWhere("a.expiresAt > :now")
+            ->setParameter("now", new \DateTime())
+            ->orderBy("a.expiresAt", "ASC")
+            ->getQuery()
+            ->getResult();
+    }
 
+    /**
+     * @param User $owner
+     * @return mixed
+     */
+    public function findMyOrdered(User $owner)
+    {
+        return $this
+            ->getEntityManager()
+            ->createQuery(
+                "SELECT a
+                FROM App:Auction a
+                WHERE a.owner = :owner
+                ORDER BY a.expiresAt ASC"
+            )
+            ->setParameter("owner", $owner)
+            ->getResult();
+    }
 }

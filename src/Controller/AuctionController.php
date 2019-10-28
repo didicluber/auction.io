@@ -19,7 +19,7 @@ class AuctionController extends Controller
     public function indexAction()
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $auctions = $entityManager->getRepository(Auction::class)->findBy(["status" => Auction::STATUS_ACTIVE]);
+        $auctions = $entityManager->getRepository(Auction::class)->findActiveOrdered();
 
         return $this->render("Auction/index.html.twig", ["auctions" => $auctions]);
     }
