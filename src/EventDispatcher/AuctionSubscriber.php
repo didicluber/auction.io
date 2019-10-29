@@ -21,7 +21,8 @@ class AuctionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::AUCTION_ADD => "log"
+            Events::AUCTION_ADD => "log",
+            Events::AUCTION_EXPIRE => "logExpire"
         ];
     }
 
@@ -30,5 +31,12 @@ class AuctionSubscriber implements EventSubscriberInterface
         $auction = $event->getAuction();
 
         $this->logger->info("Auction successfully added");
+    }
+
+    public function logExpire(AuctionEvent $event)
+    {
+        $auction = $event->getAuction();
+
+        $this->logger->info("Auction {$auction->getId()} ended automatically.");
     }
 }

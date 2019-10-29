@@ -139,8 +139,9 @@ class MyAuctionController extends Controller
             $entityManager->persist($auction);
             $entityManager->flush();
 
-            $this->addFlash("success", "{$auction->getTitle()} auction edited.");
+            $this->get("event_dispatcher")->dispatch(Events::AUCTION_EDIT, new AuctionEvent($auction));
 
+            $this->addFlash("success", "{$auction->getTitle()} auction edited.");
 
             return $this->redirectToRoute("my_auction_details", ["id" => $auction->getId()]);
         }
@@ -165,6 +166,8 @@ class MyAuctionController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($auction);
         $entityManager->flush();
+
+        $this->get("event_dispatcher")->dispatch(Events::AUCTION_DELETE, new AuctionEvent($auction));
 
         $this->addFlash("success", "{$auction->getTitle()} auction deleted.");
 
@@ -193,6 +196,8 @@ class MyAuctionController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($auction);
         $entityManager->flush();
+
+        $this->get("event_dispatcher")->dispatch(Events::AUCTION_FINISH, new AuctionEvent($auction));
 
         $this->addFlash("success", "{$auction->getTitle()} auction finished.");
 
